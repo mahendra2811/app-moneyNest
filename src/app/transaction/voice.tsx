@@ -18,6 +18,8 @@ import { useInvalidateStore } from '@/stores/invalidate';
 import { useSessionStore } from '@/stores/session';
 import { useUiStore } from '@/stores/ui';
 import { now, addDays } from '@/lib/date';
+import { getSetting } from '@/db/queries/settings';
+import { matchMacro } from '@/lib/macros';
 
 type State = 'idle' | 'listening' | 'parsed' | 'error';
 
@@ -58,10 +60,37 @@ export default function VoiceAdd() {
       setErrorMsg(t('voice.unsupportedBody'));
       return;
     }
-    unsubRef.current = voiceService.subscribe((ev) => {
+    unsubRef.current = voiceService.subscribe(async (ev) => {
       if (ev.type === 'partial') setTranscript(ev.result.transcript);
       else if (ev.type === 'final') {
         setTranscript(ev.result.transcript);
+        const macro = await matchMacro(ev.result.transcript);
+        if (macro && accounts && accounts.length > 0) {
+          await createTransaction({
+            amountPaise: macro.amountPaise,
+            type: macro.type,
+            accountId: macro.accountId ?? session.lastAccountId ?? accounts[0]!.id,
+            toAccountId: null,
+            categoryId: null,
+            occurredAt: now(),
+            note: macro.note ?? `macro:${macro.phrase}`,
+            payee: macro.payee ?? null,
+            source: 'voice',
+            deletedAt: null,
+            recurringId: null,
+          });
+          bumpTx();
+          showToast({ tone: 'success', text: `Logged macro "${macro.phrase}"` });
+          // Continuous mode (A8): auto-restart listening if enabled.
+          const continuous = await getSetting<boolean>('voice.continuous');
+          if (continuous) {
+            setState('idle');
+            setTranscript('');
+            return;
+          }
+          router.back();
+          return;
+        }
         const parsed = parseUtterance(ev.result.transcript);
         setResult(parsed);
         setState('parsed');
@@ -71,7 +100,8 @@ export default function VoiceAdd() {
       }
     });
     try {
-      await voiceService.start({ locale: 'en-IN', preferOffline: true });
+      const locale = (await getSetting<string>('voice.locale')) ?? 'en-IN';
+      await voiceService.start({ locale, preferOffline: true });
     } catch (e) {
       setState('error');
       setErrorMsg((e as Error).message);

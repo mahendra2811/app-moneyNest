@@ -7,11 +7,13 @@ const requireEnv = (key: string): string => {
   return v;
 };
 
+const scheme = (k: string) => requireEnv(k);
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: requireEnv('EXPO_PUBLIC_APP_NAME'),
   slug: requireEnv('EXPO_PUBLIC_APP_SLUG'),
-  scheme: requireEnv('EXPO_PUBLIC_SCHEME'),
+  scheme: scheme('EXPO_PUBLIC_SCHEME'),
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/icon.png',
@@ -28,6 +30,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#FFFFFF',
+      monochromeImage: './assets/adaptive-icon.png',
     },
     edgeToEdgeEnabled: true,
     permissions: [
@@ -36,10 +39,29 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       'USE_FINGERPRINT',
       'POST_NOTIFICATIONS',
       'VIBRATE',
+      'FOREGROUND_SERVICE',
+    ],
+    intentFilters: [
+      // A5 share-sheet target
+      {
+        action: 'SEND',
+        category: ['DEFAULT'],
+        data: [{ mimeType: 'text/plain' }],
+      },
+      {
+        action: 'SEND',
+        category: ['DEFAULT'],
+        data: [{ mimeType: 'image/*' }],
+      },
+      // A6 Tasker / shortcuts: ACTION=com.pooniya.moneynest.ADD
+      {
+        action: 'com.pooniya.moneynest.ADD',
+        category: ['DEFAULT'],
+      },
     ],
   },
   ios: {
-    supportsTablet: false,
+    supportsTablet: true,
     bundleIdentifier: requireEnv('EXPO_PUBLIC_PACKAGE_ID'),
   },
   plugins: [

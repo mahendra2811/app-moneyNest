@@ -43,6 +43,9 @@ export default function SettingsScreen() {
           <LinkRow icon="target" label="Budgets" onPress={() => router.push('/budgets' as never)} />
           <LinkRow icon="repeat" label="Recurring" onPress={() => router.push('/recurring' as never)} />
           <LinkRow icon="shield-check" label="Backup" onPress={() => router.push('/backup' as never)} />
+          <LinkRow icon="upload" label="Import (SMS / CSV)" onPress={() => router.push('/import' as never)} />
+          <LinkRow icon="mic" label="Voice macros" onPress={() => router.push('/macros' as never)} />
+          <LinkRow icon="sparkles" label="Round-up savings" onPress={() => router.push('/round-up' as never)} />
         </Card>
 
         <Card>

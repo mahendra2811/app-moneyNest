@@ -135,6 +135,12 @@ export function TransactionForm({ existing }: TransactionFormProps) {
       if (type === 'expense') session.setLastExpenseCategoryId(categoryId);
       if (type === 'income') session.setLastIncomeCategoryId(categoryId);
     }
+    // A13 — round-up auto-savings (no-op when disabled)
+    if (type === 'expense') {
+      const { maybeRoundUp } = await import('@/lib/round-up');
+      const r = await maybeRoundUp({ expenseAmountPaise: paise, sourceAccountId: accountId });
+      if (r.created) bumpTx();
+    }
     haptic('success');
     showToast({ tone: 'success', text: t('transactions.savedToast') });
     router.back();
