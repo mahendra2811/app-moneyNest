@@ -1,4 +1,6 @@
 import '../../global.css';
+import { installCryptoPolyfill } from '@/lib/crypto-install';
+installCryptoPolyfill();
 import React, { useEffect, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';

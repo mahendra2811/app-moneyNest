@@ -4,7 +4,7 @@ import type { ExpoConfig, ConfigContext } from 'expo/config';
 loadEnv({ path: '.env.local' });
 loadEnv();
 
-const easProjectId = '72ac492c-d8c6-4f37-87ab-c2faf2abdd60';
+const easProjectId = 'd343a0a0-4f81-470d-8dfc-616fc9ff1d04';
 
 const requireEnv = (key: string): string => {
   const v = process.env[key];

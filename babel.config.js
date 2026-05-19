@@ -5,6 +5,8 @@ module.exports = function (api) {
       ['babel-preset-expo', { jsxImportSource: 'nativewind' }],
       'nativewind/babel',
     ],
-    plugins: ['react-native-reanimated/plugin'],
+    // Expo SDK 54 + Reanimated split worklets into their own package.
+    // The worklets plugin MUST come last among plugins.
+    plugins: ['react-native-worklets/plugin'],
   };
 };

@@ -5,8 +5,6 @@ const envSchema = z.object({
   EXPO_PUBLIC_APP_SLUG: z.string().min(1),
   EXPO_PUBLIC_PACKAGE_ID: z.string().regex(/^[a-z][a-z0-9_.]+$/),
   EXPO_PUBLIC_SCHEME: z.string().min(1),
-  EXPO_PUBLIC_PRIMARY_HEX: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
-  EXPO_PUBLIC_ACCENT_HEX: z.string().regex(/^#[0-9A-Fa-f]{6}$/),
   EXPO_PUBLIC_TAGLINE: z.string().min(1),
   EXPO_PUBLIC_SUPPORT_EMAIL: z.string().email(),
   EXPO_PUBLIC_PRIVACY_URL: z.string().url(),
