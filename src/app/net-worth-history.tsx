@@ -2,7 +2,7 @@
  * NEW-29 — net worth history line chart.
  */
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { LineChart } from 'react-native-gifted-charts';
 import { AppShell } from '@/components/layout/AppShell';
 import { ScreenHeader } from '@/components/layout/ScreenHeader';

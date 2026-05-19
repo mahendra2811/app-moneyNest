@@ -12,11 +12,8 @@ import { useMonthTotals, useMonthSpendByCategory } from '@/hooks/use-transaction
 import { formatINR, formatINRShort } from '@/lib/money';
 import { addMonths, monthLabel } from '@/lib/date';
 import { takeSnapshot } from '@/db/queries/snapshots';
-import { useUiStore } from '@/stores/ui';
-
 export default function MonthlyClose() {
   const router = useRouter();
-  const showToast = useUiStore((s) => s.showToast);
   const lastRef = addMonths(new Date().toISOString(), -1);
   const totals = useMonthTotals(lastRef);
   const cats = useMonthSpendByCategory(lastRef);

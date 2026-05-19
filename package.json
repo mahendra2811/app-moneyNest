@@ -16,7 +16,8 @@
     "drizzle:push": "drizzle-kit push",
     "build:dev": "eas build --profile development --platform android",
     "build:prod": "eas build --profile production --platform android",
-    "submit": "eas submit --platform android"
+    "submit": "eas submit --platform android",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@react-native-voice/voice": "^3.2.4",

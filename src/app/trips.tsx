@@ -8,7 +8,7 @@ import { ScreenHeader } from '@/components/layout/ScreenHeader';
 import { Card, Text, Input, Button, IconButton } from '@/components/primitives';
 import { spacing } from '@/brand/spacing';
 import { listTrips, upsertTrip, deleteTrip, type Trip } from '@/lib/trips';
-import { parseToPaise, formatINR } from '@/lib/money';
+import { parseToPaise } from '@/lib/money';
 import { useUiStore } from '@/stores/ui';
 
 export default function Trips() {
@@ -30,7 +30,14 @@ export default function Trips() {
       showToast({ tone: 'error', text: 'Name, dates, budget required' });
       return;
     }
-    await upsertTrip({ name: name.trim(), destination: dest.trim() || undefined, currency, dailyBudgetPaise: p, startDate: start, endDate: end });
+    await upsertTrip({
+      name: name.trim(),
+      ...(dest.trim() ? { destination: dest.trim() } : {}),
+      currency,
+      dailyBudgetPaise: p,
+      startDate: start,
+      endDate: end,
+    });
     reload();
     setName(''); setDest(''); setBudget('5000'); setStart(''); setEnd('');
   };

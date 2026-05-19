@@ -52,7 +52,7 @@ export const mockAAProvider: AAProvider = {
   async isAvailable() {
     return true;
   },
-  async requestConsent(req: AAConsentRequest) {
+  async requestConsent(_req: AAConsentRequest) {
     return { consentHandle: `mock-${Date.now()}`, url: 'about:blank' };
   },
   async checkConsent() {

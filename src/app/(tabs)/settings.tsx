@@ -61,6 +61,45 @@ export default function SettingsScreen() {
         </Card>
 
         <Card>
+          <Text variant="h3">Smart finance</Text>
+          <View style={{ height: spacing['3'] }} />
+          <LinkRow icon="link" label="Account Aggregator" onPress={() => router.push('/aa' as never)} />
+          <LinkRow icon="gauge" label="Credit score" onPress={() => router.push('/credit-score' as never)} />
+          <LinkRow icon="zap" label="Smart rules" onPress={() => router.push('/smart-rules' as never)} />
+          <LinkRow icon="piggy-bank" label="Pay yourself first" onPress={() => router.push('/pyf' as never)} />
+          <LinkRow icon="calculator" label="What-if" onPress={() => router.push('/what-if' as never)} />
+          <LinkRow icon="trending-up" label="Forecast" onPress={() => router.push('/forecast' as never)} />
+          <LinkRow icon="search" label="Ask in plain language" onPress={() => router.push('/nl-search' as never)} />
+          <LinkRow icon="calendar-check" label="Monthly close" onPress={() => router.push('/monthly-close' as never)} />
+          <LinkRow icon="line-chart" label="Net worth history" onPress={() => router.push('/net-worth-history' as never)} />
+          <LinkRow icon="calendar" label="Calendar view" onPress={() => router.push('/transactions/calendar' as never)} />
+          <LinkRow icon="banknote" label="EMI prepay" onPress={() => router.push('/emi-prepay' as never)} />
+          <LinkRow icon="arrow-up-down" label="Price changes" onPress={() => router.push('/price-watch' as never)} />
+          <LinkRow icon="hand-coins" label="Bill negotiation" onPress={() => router.push('/bill-negotiation' as never)} />
+        </Card>
+
+        <Card>
+          <Text variant="h3">Life events</Text>
+          <View style={{ height: spacing['3'] }} />
+          <LinkRow icon="party-popper" label="Festival pots" onPress={() => router.push('/festivals' as never)} />
+          <LinkRow icon="heart-handshake" label="Zakat / charity" onPress={() => router.push('/zakat' as never)} />
+          <LinkRow icon="user-cog" label="Profiles" onPress={() => router.push('/profiles' as never)} />
+          <LinkRow icon="plane" label="Trips" onPress={() => router.push('/trips' as never)} />
+          <LinkRow icon="baby" label="Family" onPress={() => router.push('/family' as never)} />
+          <LinkRow icon="folder-lock" label="Document vault" onPress={() => router.push('/vault' as never)} />
+          <LinkRow icon="shield" label="Warranties" onPress={() => router.push('/warranty' as never)} />
+          <LinkRow icon="scroll" label="Nominees" onPress={() => router.push('/nominee' as never)} />
+        </Card>
+
+        <Card>
+          <Text variant="h3">Power</Text>
+          <View style={{ height: spacing['3'] }} />
+          <LinkRow icon="inbox" label="Review queue" onPress={() => router.push('/review-queue' as never)} />
+          <LinkRow icon="file-clock" label="Audit log" onPress={() => router.push('/audit-log' as never)} />
+          <LinkRow icon="layout-dashboard" label="Customise home" onPress={() => router.push('/dashboard-customize' as never)} />
+        </Card>
+
+        <Card>
           <Text variant="h3">Notifications</Text>
           <View style={{ height: spacing['3'] }} />
           <Row label="Budget alerts">

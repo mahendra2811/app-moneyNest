@@ -14,6 +14,10 @@ import { checkBudgetAlerts } from '@/lib/budget-alerts';
 import { maybeFireBackupReminder } from '@/lib/backup-reminder';
 import { maybeFireWeeklyDigest } from '@/lib/digest';
 import { ensureFts } from '@/db/queries/search';
+import { maybeRunScheduledBackup } from '@/lib/scheduled-backup';
+import { fireBillReminders } from '@/lib/bills';
+import { maybeDailySnapshot } from '@/db/queries/snapshots';
+import { audit } from '@/db/queries/audit';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
@@ -60,6 +64,10 @@ export default function RootLayout() {
         await checkBudgetAlerts().catch(() => undefined);
         await maybeFireBackupReminder().catch(() => undefined);
         await maybeFireWeeklyDigest().catch(() => undefined);
+        await fireBillReminders().catch(() => undefined);
+        await maybeRunScheduledBackup().catch(() => undefined);
+        await maybeDailySnapshot().catch(() => undefined);
+        await audit('login', 'settings', 'cold-start').catch(() => undefined);
       } catch (e) {
         if (__DEV__) console.warn('init failed', e);
       } finally {

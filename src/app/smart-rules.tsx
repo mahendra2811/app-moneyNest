@@ -2,7 +2,7 @@
  * NEW-20 — smart rules manager.
  */
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View, Pressable } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { AppShell } from '@/components/layout/AppShell';
 import { ScreenHeader } from '@/components/layout/ScreenHeader';
 import { Card, Text, Input, Button, Chip, Switch, IconButton } from '@/components/primitives';
@@ -11,7 +11,8 @@ import { getSetting, setSetting } from '@/db/queries/settings';
 import { uuidv7 } from '@/lib/id';
 import { now } from '@/lib/date';
 import { useCategories } from '@/hooks/use-categories';
-import { parseToPaise, formatINR } from '@/lib/money';
+import { parseToPaise } from '@/lib/money';
+import { formatINR } from '@/lib/money';
 import type { SmartRule } from '@/lib/smart-rules';
 import { useUiStore } from '@/stores/ui';
 
