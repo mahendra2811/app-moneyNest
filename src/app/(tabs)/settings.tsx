@@ -46,6 +46,8 @@ export default function SettingsScreen() {
           <LinkRow icon="upload" label="Import (SMS / CSV)" onPress={() => router.push('/import' as never)} />
           <LinkRow icon="mic" label="Voice macros" onPress={() => router.push('/macros' as never)} />
           <LinkRow icon="sparkles" label="Round-up savings" onPress={() => router.push('/round-up' as never)} />
+          <LinkRow icon="trending-up" label="Finance hub" onPress={() => router.push('/finance' as never)} />
+          <LinkRow icon="award" label={`Recap ${new Date().getUTCFullYear()}`} onPress={() => router.push(`/recap/${new Date().getUTCFullYear()}` as never)} />
         </Card>
 
         <Card>
