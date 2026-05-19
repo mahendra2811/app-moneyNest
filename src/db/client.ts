@@ -2,6 +2,7 @@ import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { openDatabaseSync } from 'expo-sqlite';
 import { appConfig } from '@/config/app';
 import * as schema from './schema';
+import { INIT_SQL } from './migrations/inline';
 
 const sqlite = openDatabaseSync(appConfig.dbName, {
   enableChangeListener: false,
@@ -10,11 +11,12 @@ const sqlite = openDatabaseSync(appConfig.dbName, {
 export const db = drizzle(sqlite, { schema });
 
 /**
- * Phase 0 — empty migrations list. Phase 1 wires drizzle-kit output.
- * Until then, this runner is a no-op that confirms the DB opens.
+ * Apply pending migrations idempotently. Each migration is a string of
+ * SQL statements separated by semicolons. The expo-sqlite `execAsync`
+ * runs them all in a single batch.
  */
 export async function runMigrations(): Promise<void> {
-  // Placeholder. Drizzle-kit generated SQL will be applied here in Phase 1.
+  await sqlite.execAsync(INIT_SQL);
 }
 
 export { schema };

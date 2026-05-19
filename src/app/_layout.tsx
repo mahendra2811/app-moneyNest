@@ -1,13 +1,14 @@
 import '../../global.css';
 import React, { useEffect, useState } from 'react';
-import { Stack } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useFonts } from 'expo-font';
 import { ThemeProvider, useThemeContext } from '@/theme';
 import { ToastHost } from '@/components/primitives';
 import { runMigrations } from '@/db/client';
+import { seedIfEmpty } from '@/db/seed';
+import { getSetting } from '@/db/queries/settings';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
@@ -16,18 +17,41 @@ function StatusBarBinding() {
   return <StatusBar style={tokens.statusBar === 'dark' ? 'dark' : 'light'} />;
 }
 
+function OnboardingGate({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const segments = useSegments();
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const completedAt = await getSetting<string>('onboarding.completedAt');
+        const inOnboarding = segments[0] === '(onboarding)';
+        if (!completedAt && !inOnboarding) {
+          router.replace('/(onboarding)/welcome');
+        }
+      } catch (e) {
+        if (__DEV__) console.warn('onboarding gate', e);
+      } finally {
+        setChecked(true);
+      }
+    })();
+  }, [router, segments]);
+
+  if (!checked) return null;
+  return <>{children}</>;
+}
+
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
-    // System Inter on Android 12+; bundle later if needed
-  });
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
         await runMigrations();
+        await seedIfEmpty();
       } catch (e) {
-        if (__DEV__) console.warn('migration failed', e);
+        if (__DEV__) console.warn('init failed', e);
       } finally {
         setReady(true);
         SplashScreen.hideAsync().catch(() => undefined);
@@ -35,13 +59,17 @@ export default function RootLayout() {
     })();
   }, []);
 
-  if (!ready && !fontsLoaded) return null;
+  if (!ready) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
         <StatusBarBinding />
-        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'transparent' } }} />
+        <OnboardingGate>
+          <Stack
+            screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
+          />
+        </OnboardingGate>
         <ToastHost />
       </ThemeProvider>
     </GestureHandlerRootView>
