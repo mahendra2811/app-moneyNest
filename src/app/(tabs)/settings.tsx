@@ -42,6 +42,7 @@ export default function SettingsScreen() {
           <LinkRow icon="wallet" label="Accounts" onPress={() => router.push('/accounts' as never)} />
           <LinkRow icon="target" label="Budgets" onPress={() => router.push('/budgets' as never)} />
           <LinkRow icon="repeat" label="Recurring" onPress={() => router.push('/recurring' as never)} />
+          <LinkRow icon="shield-check" label="Backup" onPress={() => router.push('/backup' as never)} />
         </Card>
 
         <Card>
@@ -66,6 +67,12 @@ export default function SettingsScreen() {
           <Row label={t('settings.crashes')} sub={t('settings.crashesBody')}>
             <Switch value={settings.crashesOptIn} onValueChange={settings.setCrashesOptIn} />
           </Row>
+          <Divider style={{ marginVertical: spacing['3'] }} />
+          <Row label={t('settings.lock')} sub={t('settings.lockBody')}>
+            <Switch value={settings.lockEnabled} onValueChange={settings.setLockEnabled} />
+          </Row>
+          <Divider style={{ marginVertical: spacing['3'] }} />
+          <LinkRow icon="trash-2" label={t('settings.deleteAllData')} onPress={() => router.push('/danger-zone' as never)} />
         </Card>
 
         <Card>
