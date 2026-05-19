@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { View, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { useUiStore } from '@/stores/ui';
 import { useTheme } from '@/theme/useTheme';
 import { spacing } from '@/brand/spacing';
-import { radius } from '@/brand/radius';
+import { GlassCard } from './GlassCard';
 import { Text } from './Text';
 import { Icon } from './Icon';
 
@@ -37,6 +37,7 @@ export function ToastHost() {
     <Animated.View
       entering={FadeInDown}
       exiting={FadeOutDown}
+      accessibilityLiveRegion="polite"
       style={{
         position: 'absolute',
         bottom: 96,
@@ -45,24 +46,15 @@ export function ToastHost() {
       }}
       pointerEvents="box-none"
     >
-      <View
-        style={{
-          backgroundColor: t.surface,
-          borderColor: t.border,
-          borderWidth: 1,
-          borderRadius: radius.lg,
-          padding: spacing['4'],
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: spacing['3'],
-        }}
-      >
+      <GlassCard intensity="medium" radius="lg" padded={false} style={{ padding: spacing['4'], flexDirection: 'row', alignItems: 'center', gap: spacing['3'] }}>
         <Icon name={iconName} size="sm" color={accent} />
         <Text style={{ flex: 1 }} variant="small">
           {toast.text}
         </Text>
         {toast.actionLabel ? (
           <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={toast.actionLabel}
             onPress={() => {
               toast.onAction?.();
               dismiss();
@@ -74,7 +66,7 @@ export function ToastHost() {
             </Text>
           </Pressable>
         ) : null}
-      </View>
+      </GlassCard>
     </Animated.View>
   );
 }

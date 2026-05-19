@@ -14,6 +14,10 @@ export default function TabsLayout() {
         tabBarStyle: {
           backgroundColor: t.surface,
           borderTopColor: t.border,
+          borderTopWidth: 1,
+          elevation: 0,
+          height: 64,
+          paddingTop: 6,
         },
         tabBarLabelStyle: { fontSize: 11, fontWeight: '500' },
       }}
@@ -22,6 +26,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: 'Home',
+          tabBarAccessibilityLabel: 'Home',
           tabBarIcon: ({ color }) => <Icon name="home" size="sm" color={color} />,
         }}
       />
@@ -29,6 +34,7 @@ export default function TabsLayout() {
         name="transactions"
         options={{
           title: 'Transactions',
+          tabBarAccessibilityLabel: 'Transactions',
           tabBarIcon: ({ color }) => <Icon name="list" size="sm" color={color} />,
         }}
       />
@@ -36,6 +42,7 @@ export default function TabsLayout() {
         name="reports"
         options={{
           title: 'Reports',
+          tabBarAccessibilityLabel: 'Reports',
           tabBarIcon: ({ color }) => <Icon name="pie-chart" size="sm" color={color} />,
         }}
       />
@@ -43,6 +50,7 @@ export default function TabsLayout() {
         name="settings"
         options={{
           title: 'Settings',
+          tabBarAccessibilityLabel: 'Settings',
           tabBarIcon: ({ color }) => <Icon name="settings" size="sm" color={color} />,
         }}
       />
