@@ -12,6 +12,8 @@ import { getSetting } from '@/db/queries/settings';
 import { materializeDueRecurring } from '@/lib/recurring-materializer';
 import { checkBudgetAlerts } from '@/lib/budget-alerts';
 import { maybeFireBackupReminder } from '@/lib/backup-reminder';
+import { maybeFireWeeklyDigest } from '@/lib/digest';
+import { ensureFts } from '@/db/queries/search';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
@@ -54,8 +56,10 @@ export default function RootLayout() {
         await runMigrations();
         await seedIfEmpty();
         await materializeDueRecurring();
+        await ensureFts().catch(() => undefined);
         await checkBudgetAlerts().catch(() => undefined);
         await maybeFireBackupReminder().catch(() => undefined);
+        await maybeFireWeeklyDigest().catch(() => undefined);
       } catch (e) {
         if (__DEV__) console.warn('init failed', e);
       } finally {
