@@ -1,0 +1,15 @@
+export const appConfig = {
+  dbName: 'moneynest.db',
+  backupFileExt: '.mnbk',
+  backupVersion: 1,
+  schemaVersion: 1,
+  defaultLocale: 'en-IN',
+  defaultTimezone: 'Asia/Kolkata',
+  defaultCurrency: 'INR',
+  reduceMotionPersistMs: 250,
+  voiceLowConfidence: 0.4,
+  voiceTentativeConfidence: 0.7,
+  budgetWarnAt: 0.8,
+  budgetOverAt: 1.0,
+  pageSize: 50,
+} as const;

@@ -1,0 +1,15 @@
+export const errors = {
+  generic: 'Something went wrong.',
+  network: 'No internet connection.',
+  invalidAmount: 'Enter a valid amount.',
+  amountTooLarge: 'Amount is too large.',
+  pickCategoryFirst: 'Pick a category.',
+  pickAccountFirst: 'Pick an account.',
+  pickToAccount: 'Pick a destination account.',
+  sameAccount: 'Source and destination cannot be the same.',
+  voiceNotAvailable: 'Voice input is not available.',
+  micPermissionDenied: 'Mic permission denied.',
+  fileTooLarge: 'File is too large.',
+  fileInvalid: 'File is not a valid backup.',
+  dbOpenFailed: 'Could not open the database.',
+} as const;

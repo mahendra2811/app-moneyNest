@@ -1,0 +1,35 @@
+node_modules/
+.expo/
+dist/
+android/
+ios/
+web-build/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# EAS
+.eas/
+
+# Build artifacts
+*.aab
+*.apk
+*.ipa
+
+# Drizzle
+drizzle/.cache/

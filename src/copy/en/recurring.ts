@@ -1,0 +1,16 @@
+export const recurring = {
+  title: 'Recurring',
+  newTitle: 'New recurring',
+  editTitle: 'Edit recurring',
+  frequency: 'Frequency',
+  daily: 'Daily',
+  weekly: 'Weekly',
+  monthly: 'Monthly',
+  yearly: 'Yearly',
+  startDate: 'Starts',
+  endDate: 'Ends (optional)',
+  nextRun: 'Next on',
+  active: 'Active',
+  paused: 'Paused',
+  empty: 'No recurring transactions yet.',
+} as const;

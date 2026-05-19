@@ -1,0 +1,30 @@
+import { palette } from '@/brand/colors';
+import type { ThemeTokens } from './light';
+
+export const darkTheme: ThemeTokens = {
+  mode: 'dark',
+  bg: palette.surfaceDark,
+  surface: palette.surfaceAltDark,
+  surfaceMuted: palette.surfaceDark,
+  border: palette.borderDark,
+  borderStrong: palette.borderStrongDark,
+  text: palette.inkDark,
+  textMuted: palette.inkSoftDark,
+  textFaint: palette.inkMuteDark,
+  textOnAccent: palette.white,
+  accent: palette.primaryGlow,
+  accentSoft: 'rgba(34, 197, 94, 0.18)',
+  accentStrong: palette.primary,
+  expense: '#F87171',
+  expenseSoft: 'rgba(248, 113, 113, 0.16)',
+  income: palette.primaryGlow,
+  transfer: '#60A5FA',
+  transferSoft: 'rgba(96, 165, 250, 0.18)',
+  warning: '#FBBF24',
+  warningSoft: 'rgba(251, 191, 36, 0.16)',
+  glassTint: 'rgba(15, 23, 42, 0.55)',
+  glassBorder: 'rgba(148, 163, 184, 0.18)',
+  glassGlow: 'rgba(255, 255, 255, 0.12)',
+  gradient: [palette.gradDark1, palette.gradDark2, palette.gradDark3],
+  statusBar: 'light',
+};
