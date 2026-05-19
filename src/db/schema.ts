@@ -148,6 +148,53 @@ export const backupLog = sqliteTable(
   }),
 );
 
+// Phase 8 additions ---------------------------------------------------
+
+export const snapshots = sqliteTable(
+  'snapshots',
+  {
+    id: text('id').primaryKey(),
+    takenAt: text('taken_at').notNull(),
+    accountTotalPaise: integer('account_total_paise').notNull(),
+    investmentTotalPaise: integer('investment_total_paise').notNull(),
+    loanTotalPaise: integer('loan_total_paise').notNull(),
+    netWorthPaise: integer('net_worth_paise').notNull(),
+  },
+  (t) => ({ idxTakenAt: index('idx_snapshots_taken_at').on(t.takenAt) }),
+);
+
+export const auditLog = sqliteTable(
+  'audit_log',
+  {
+    id: text('id').primaryKey(),
+    at: text('at').notNull(),
+    action: text('action').notNull(),
+    scope: text('scope').notNull(),
+    detail: text('detail'),
+  },
+  (t) => ({ idxAt: index('idx_audit_at').on(t.at) }),
+);
+
+export const reviewQueue = sqliteTable(
+  'review_queue',
+  {
+    id: text('id').primaryKey(),
+    createdAt: text('created_at').notNull(),
+    source: text('source').notNull(),
+    payloadJson: text('payload_json').notNull(),
+    confidence: integer('confidence').notNull(),
+    status: text('status').notNull().default('pending'),
+  },
+  (t) => ({ idxStatus: index('idx_review_status').on(t.status, t.createdAt) }),
+);
+
+export type Snapshot = typeof snapshots.$inferSelect;
+export type NewSnapshot = typeof snapshots.$inferInsert;
+export type AuditEntry = typeof auditLog.$inferSelect;
+export type NewAuditEntry = typeof auditLog.$inferInsert;
+export type ReviewItem = typeof reviewQueue.$inferSelect;
+export type NewReviewItem = typeof reviewQueue.$inferInsert;
+
 export type Account = typeof accounts.$inferSelect;
 export type NewAccount = typeof accounts.$inferInsert;
 export type Category = typeof categories.$inferSelect;

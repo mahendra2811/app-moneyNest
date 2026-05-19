@@ -111,4 +111,38 @@ CREATE TABLE IF NOT EXISTS backup_log (
   created_at text NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_backup_created ON backup_log (created_at);
+
+-- Phase 8 additions ---------------------------------------------------
+
+-- Net worth snapshots (NEW-29)
+CREATE TABLE IF NOT EXISTS snapshots (
+  id text PRIMARY KEY NOT NULL,
+  taken_at text NOT NULL,
+  account_total_paise integer NOT NULL,
+  investment_total_paise integer NOT NULL,
+  loan_total_paise integer NOT NULL,
+  net_worth_paise integer NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_snapshots_taken_at ON snapshots (taken_at);
+
+-- Audit log (NEW-51)
+CREATE TABLE IF NOT EXISTS audit_log (
+  id text PRIMARY KEY NOT NULL,
+  at text NOT NULL,
+  action text NOT NULL,         -- e.g. 'read', 'write', 'export', 'restore'
+  scope text NOT NULL,          -- e.g. 'transactions', 'backup', 'settings'
+  detail text                   -- optional short text, never PII
+);
+CREATE INDEX IF NOT EXISTS idx_audit_at ON audit_log (at);
+
+-- Manual review queue (NEW-46)
+CREATE TABLE IF NOT EXISTS review_queue (
+  id text PRIMARY KEY NOT NULL,
+  created_at text NOT NULL,
+  source text NOT NULL,         -- 'sms' | 'csv' | 'ocr' | 'aa'
+  payload_json text NOT NULL,
+  confidence real NOT NULL,
+  status text NOT NULL DEFAULT 'pending'   -- 'pending' | 'approved' | 'rejected'
+);
+CREATE INDEX IF NOT EXISTS idx_review_status ON review_queue (status, created_at);
 `;

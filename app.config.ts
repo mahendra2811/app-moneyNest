@@ -1,5 +1,10 @@
-import 'dotenv/config';
+import { config as loadEnv } from 'dotenv';
 import type { ExpoConfig, ConfigContext } from 'expo/config';
+
+loadEnv({ path: '.env.local' });
+loadEnv();
+
+const easProjectId = '72ac492c-d8c6-4f37-87ab-c2faf2abdd60';
 
 const requireEnv = (key: string): string => {
   const v = process.env[key];
@@ -11,6 +16,7 @@ const scheme = (k: string) => requireEnv(k);
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
+  owner: 'mahi0092',
   name: requireEnv('EXPO_PUBLIC_APP_NAME'),
   slug: requireEnv('EXPO_PUBLIC_APP_SLUG'),
   scheme: scheme('EXPO_PUBLIC_SCHEME'),
@@ -81,6 +87,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ],
   experiments: { typedRoutes: true },
   extra: {
-    eas: { projectId: process.env.EAS_PROJECT_ID },
+    eas: { projectId: easProjectId },
   },
 });
