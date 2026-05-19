@@ -9,6 +9,7 @@ import { ToastHost } from '@/components/primitives';
 import { runMigrations } from '@/db/client';
 import { seedIfEmpty } from '@/db/seed';
 import { getSetting } from '@/db/queries/settings';
+import { materializeDueRecurring } from '@/lib/recurring-materializer';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
@@ -50,6 +51,7 @@ export default function RootLayout() {
       try {
         await runMigrations();
         await seedIfEmpty();
+        await materializeDueRecurring();
       } catch (e) {
         if (__DEV__) console.warn('init failed', e);
       } finally {
