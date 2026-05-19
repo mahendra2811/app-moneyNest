@@ -10,6 +10,8 @@ import { runMigrations } from '@/db/client';
 import { seedIfEmpty } from '@/db/seed';
 import { getSetting } from '@/db/queries/settings';
 import { materializeDueRecurring } from '@/lib/recurring-materializer';
+import { checkBudgetAlerts } from '@/lib/budget-alerts';
+import { maybeFireBackupReminder } from '@/lib/backup-reminder';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
@@ -52,6 +54,8 @@ export default function RootLayout() {
         await runMigrations();
         await seedIfEmpty();
         await materializeDueRecurring();
+        await checkBudgetAlerts().catch(() => undefined);
+        await maybeFireBackupReminder().catch(() => undefined);
       } catch (e) {
         if (__DEV__) console.warn('init failed', e);
       } finally {
