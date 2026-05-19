@@ -28,12 +28,20 @@ export default function Welcome() {
             </Text>
           </GlassCard>
         </View>
-        <Button
-          label={t('onboarding.welcomeCta')}
-          size="lg"
-          fullWidth
-          onPress={() => router.push('/(onboarding)/first-account')}
-        />
+        <View style={{ gap: spacing['2'] }}>
+          <Button
+            label={t('onboarding.welcomeCta')}
+            size="lg"
+            fullWidth
+            onPress={() => router.push('/(onboarding)/first-account')}
+          />
+          <Button
+            label="Restore from backup"
+            variant="ghost"
+            fullWidth
+            onPress={() => router.push('/backup' as never)}
+          />
+        </View>
       </View>
     </AppShell>
   );

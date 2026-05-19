@@ -48,6 +48,14 @@ export default function SettingsScreen() {
           <LinkRow icon="sparkles" label="Round-up savings" onPress={() => router.push('/round-up' as never)} />
           <LinkRow icon="trending-up" label="Finance hub" onPress={() => router.push('/finance' as never)} />
           <LinkRow icon="award" label={`Recap ${new Date().getUTCFullYear()}`} onPress={() => router.push(`/recap/${new Date().getUTCFullYear()}` as never)} />
+          <LinkRow icon="users" label="Splits" onPress={() => router.push('/splits' as never)} />
+          <LinkRow icon="qr-code" label="UPI request" onPress={() => router.push('/upi-request' as never)} />
+          <LinkRow icon="share-2" label="Share monthly report" onPress={() => router.push('/share-report' as never)} />
+          <LinkRow icon="archive" label="Backup history" onPress={() => router.push('/backup-history' as never)} />
+          <LinkRow icon="trash" label="Trash" onPress={() => router.push('/trash' as never)} />
+          <LinkRow icon="settings-2" label="Cleanup (aliases, merge)" onPress={() => router.push('/admin' as never)} />
+          <LinkRow icon="palette" label="Display" onPress={() => router.push('/ui-prefs' as never)} />
+          <LinkRow icon="shield" label="Security" onPress={() => router.push('/security' as never)} />
         </Card>
 
         <Card>
