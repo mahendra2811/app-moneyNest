@@ -56,6 +56,8 @@ export default function SettingsScreen() {
           <LinkRow icon="settings-2" label="Cleanup (aliases, merge)" onPress={() => router.push('/admin' as never)} />
           <LinkRow icon="palette" label="Display" onPress={() => router.push('/ui-prefs' as never)} />
           <LinkRow icon="shield" label="Security" onPress={() => router.push('/security' as never)} />
+          <LinkRow icon="globe" label="Language & format" onPress={() => router.push('/locale' as never)} />
+          <LinkRow icon="star" label="moneyNest Plus" onPress={() => router.push('/premium' as never)} />
         </Card>
 
         <Card>
