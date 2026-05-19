@@ -1,5 +1,6 @@
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+// expo-file-system 19 moved the legacy URI/encoding API behind /legacy
+import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import type { FilesystemService } from './types';
 

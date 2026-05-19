@@ -81,9 +81,19 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
           compileSdkVersion: 35,
           targetSdkVersion: 35,
           minSdkVersion: 26,
+          // Expo SDK 54's expo-root-project + KSP plugin require Kotlin 2.x.
+          kotlinVersion: '2.0.21',
+          // @react-native-voice/voice (deprecated) drags in the legacy
+          // com.android.support libs; Jetifier converts them to AndroidX so
+          // the duplicate-class check doesn't fail.
+          enableJetifier: true,
         },
       },
     ],
+    // The generated android/build.gradle references `$kotlinVersion`
+    // without the `android.` prefix; this plugin adds the un-prefixed key
+    // to gradle.properties so the interpolation resolves.
+    './plugins/with-kotlin-version.js',
   ],
   experiments: { typedRoutes: true },
   extra: {

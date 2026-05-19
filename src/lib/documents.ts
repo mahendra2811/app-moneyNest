@@ -5,7 +5,7 @@
  * file system (Expo FileSystem documentDirectory) wrapped with the user's
  * backup passphrase.
  */
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as SecureStore from 'expo-secure-store';
 import { getSetting, setSetting } from '@/db/queries/settings';
 import { uuidv7 } from './id';

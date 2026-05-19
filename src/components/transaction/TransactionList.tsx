@@ -62,7 +62,6 @@ export function TransactionList({
     <FlashList
       data={flatItems}
       keyExtractor={(it) => it.key}
-      estimatedItemSize={72}
       ListEmptyComponent={ListEmptyComponent}
       ListHeaderComponent={ListHeaderComponent}
       onEndReached={onEndReached}
