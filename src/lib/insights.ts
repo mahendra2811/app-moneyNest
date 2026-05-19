@@ -2,8 +2,7 @@
  * Aggregate insight helpers — B7, B8, B17.
  */
 import { db } from '@/db/client';
-import { transactions } from '@/db/schema';
-import { and, eq, isNull, sql } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { startOfMonthLocal, endOfMonthLocal, addMonths, now } from './date';
 
 export type DriftReport = {
