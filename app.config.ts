@@ -25,6 +25,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   icon: './assets/icon.png',
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
+  // Android-first per brief; web is out of V1.
+  platforms: ['android', 'ios'],
   splash: {
     image: './assets/splash.png',
     resizeMode: 'contain',
