@@ -29,8 +29,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Create android/app directory
-        run: mkdir -p android/app
+      - name: Generate android folder via expo prebuild
+        run: npx expo prebuild --platform android --clean
+        env:
+          EXPO_PUBLIC_APP_NAME: ${{ secrets.EXPO_PUBLIC_APP_NAME }}
+          EXPO_PUBLIC_APP_SLUG: ${{ secrets.EXPO_PUBLIC_APP_SLUG }}
+          EXPO_PUBLIC_PACKAGE_ID: ${{ secrets.EXPO_PUBLIC_PACKAGE_ID }}
+          EXPO_PUBLIC_SCHEME: ${{ secrets.EXPO_PUBLIC_SCHEME }}
+          EXPO_PUBLIC_SUPPORT_EMAIL: ${{ secrets.EXPO_PUBLIC_SUPPORT_EMAIL }}
+          EXPO_PUBLIC_PRIVACY_URL: ${{ secrets.EXPO_PUBLIC_PRIVACY_URL }}
 
       - name: Decode keystore
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release.keystore
@@ -55,13 +62,6 @@ jobs:
       - name: Build release APK
         working-directory: android
         run: ./gradlew assembleRelease --no-daemon
-        env:
-          EXPO_PUBLIC_APP_NAME: ${{ secrets.EXPO_PUBLIC_APP_NAME }}
-          EXPO_PUBLIC_APP_SLUG: ${{ secrets.EXPO_PUBLIC_APP_SLUG }}
-          EXPO_PUBLIC_PACKAGE_ID: ${{ secrets.EXPO_PUBLIC_PACKAGE_ID }}
-          EXPO_PUBLIC_SCHEME: ${{ secrets.EXPO_PUBLIC_SCHEME }}
-          EXPO_PUBLIC_SUPPORT_EMAIL: ${{ secrets.EXPO_PUBLIC_SUPPORT_EMAIL }}
-          EXPO_PUBLIC_PRIVACY_URL: ${{ secrets.EXPO_PUBLIC_PRIVACY_URL }}
 
       - name: Get version
         id: info
@@ -83,7 +83,6 @@ jobs:
           body: |
             ### MoneyNest v${{ steps.info.outputs.VERSION }}
             Download the APK below and install on your Android device.
-            Built from commit ${{ github.sha }}
           files: moneynest-v${{ steps.info.outputs.VERSION }}.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
