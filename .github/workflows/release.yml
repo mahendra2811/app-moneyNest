@@ -1,0 +1,86 @@
+name: Build APK & Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Decode keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release.keystore
+
+      - name: Inject signing into gradle.properties
+        run: |
+          cat >> android/gradle.properties << 'EOF'
+          RELEASE_STORE_FILE=release.keystore
+          RELEASE_KEY_ALIAS=${{ secrets.KEY_ALIAS }}
+          RELEASE_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
+          RELEASE_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}
+          EOF
+
+      - name: Patch build.gradle signing config
+        run: |
+          sed -i 's/signingConfig signingConfigs.debug/signingConfig signingConfigs.release/' android/app/build.gradle
+          sed -i '/signingConfigs {/a\        release {\n            storeFile file(RELEASE_STORE_FILE)\n            storePassword RELEASE_STORE_PASSWORD\n            keyAlias RELEASE_KEY_ALIAS\n            keyPassword RELEASE_KEY_PASSWORD\n        }' android/app/build.gradle
+
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
+      - name: Build release APK
+        working-directory: android
+        run: ./gradlew assembleRelease --no-daemon
+        env:
+          EXPO_PUBLIC_APP_NAME: ${{ secrets.EXPO_PUBLIC_APP_NAME }}
+          EXPO_PUBLIC_APP_SLUG: ${{ secrets.EXPO_PUBLIC_APP_SLUG }}
+          EXPO_PUBLIC_PACKAGE_ID: ${{ secrets.EXPO_PUBLIC_PACKAGE_ID }}
+          EXPO_PUBLIC_SCHEME: ${{ secrets.EXPO_PUBLIC_SCHEME }}
+          EXPO_PUBLIC_SUPPORT_EMAIL: ${{ secrets.EXPO_PUBLIC_SUPPORT_EMAIL }}
+          EXPO_PUBLIC_PRIVACY_URL: ${{ secrets.EXPO_PUBLIC_PRIVACY_URL }}
+
+      - name: Get version
+        id: info
+        run: echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Rename APK
+        run: cp android/app/build/outputs/apk/release/app-release.apk moneynest-v${{ steps.info.outputs.VERSION }}.apk
+
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: moneynest-v${{ steps.info.outputs.VERSION }}
+          path: moneynest-v${{ steps.info.outputs.VERSION }}.apk
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "MoneyNest v${{ steps.info.outputs.VERSION }}"
+          body: |
+            ### MoneyNest v${{ steps.info.outputs.VERSION }}
+            Download the APK below and install on your Android device.
+            Built from commit ${{ github.sha }}
+          files: moneynest-v${{ steps.info.outputs.VERSION }}.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
